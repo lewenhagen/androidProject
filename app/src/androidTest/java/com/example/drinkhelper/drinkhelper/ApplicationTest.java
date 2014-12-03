@@ -1,4 +1,4 @@
-package com.example.project.project;
+package com.example.drinkhelper.drinkhelper;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
