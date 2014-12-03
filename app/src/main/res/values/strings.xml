@@ -4,5 +4,6 @@
     <string name="app_name">Drink Helper 1.0</string>
     <string name="hello_world">Kenneth är bäst! (mycket bättre än Robin)</string>
     <string name="action_settings">Settings</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
