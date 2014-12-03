@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Android Application</string>
+    <string name="app_name">Drink Helper 1.0</string>
     <string name="hello_world">Kenneth är bäst! (mycket bättre än Robin)</string>
     <string name="action_settings">Settings</string>
 
