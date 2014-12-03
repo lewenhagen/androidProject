@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Android Application</string>
-    <string name="hello_world">Kenneth är bäst!</string>
+    <string name="hello_world">Kenneth är bäst! (mycket bättre än Robin)</string>
     <string name="action_settings">Settings</string>
 
 </resources>
