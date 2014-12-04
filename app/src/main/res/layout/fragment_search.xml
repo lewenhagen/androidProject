@@ -1,11 +1,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.androidproject.androidapplication.FavoritesFragment">
+    tools:context="com.androidproject.androidapplication.SearchFragment">
 
     <TextView android:layout_width="wrap_content" android:layout_height="63dp"
-        android:text="@string/favorites"
-        android:id="@+id/favorites_textview"
+        android:text="@string/search"
+        android:id="@+id/search_textview"
         android:layout_gravity="center"
         android:textSize="30dp" />
 

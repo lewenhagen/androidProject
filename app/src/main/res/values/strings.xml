@@ -2,9 +2,15 @@
 <resources>
 
     <string name="app_name">Drink Helper 1.0</string>
-    <string name="hello_world">Kenneth är bäst! (mycket bättre än Robin)</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_search">Search</string>
+    <string name="search">Hello search fragment</string>
+    <string name="favorites">Hello favorites fragment</string>
+    <string name="home">Hello home fragment</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_main">MainActivity</string>
 
 </resources>
