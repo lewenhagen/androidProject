@@ -1,5 +1,6 @@
 package com.androidproject.androidapplication;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -7,6 +8,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -17,8 +19,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
@@ -31,12 +37,12 @@ public class MainActivity extends Activity {
      * may be best to switch to a
      * {@link android.support.v13.app.FragmentStatePagerAdapter}.
      */
-    SectionsPagerAdapter mSectionsPagerAdapter;
+
 
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    ViewPager mViewPager;
+    //ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,26 +51,38 @@ public class MainActivity extends Activity {
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
+       /* mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(1);
+        mViewPager.setCurrentItem(1); */
 
-        /*
         HomeFragment test = new HomeFragment();
 
         TabHost mTabHost = (TabHost) findViewById(R.id.tabHost);
-        TabHost.TabSpec mTabContent = mTabHost.newTabSpec("Home");
-        mTabContent.setContent(test.getView().getId());
-        mTabContent.setIndicator("Home");
-        mTabContent.addTab(mTabHost.newTabSpec("Home"));
-        */
+        mTabHost.setup();
+        TabHost.TabSpec mTabContent = mTabHost.newTabSpec("Search");
+        mTabContent.setContent(R.id.tab1);
+        mTabContent.setIndicator("Search");
+        mTabHost.addTab(mTabContent);
 
-        /*
-        getFragmentManager().beginTransaction().add(R.id.home_pager, new HomeFragment());
-        getFragmentManager().beginTransaction().add(R.id.search_pager, new SearchFragment());
+        mTabContent = mTabHost.newTabSpec("Home");
+        mTabContent.setContent(R.id.tab2);
+        mTabContent.setIndicator("Home");
+        mTabHost.addTab(mTabContent);
+
+        mTabContent = mTabHost.newTabSpec("Favorites");
+        mTabContent.setContent(R.id.favorites_tab);
+        mTabContent.setIndicator("Favorites");
+        mTabHost.addTab(mTabContent);
+
+        mTabHost.setCurrentTab(1);
+
+        initFavorites();
+
+        //getFragmentManager().beginTransaction().add(R.id.search_pager, new HomeFragment());
+        /* getFragmentManager().beginTransaction().add(R.id.search_pager, new SearchFragment());
         getFragmentManager().beginTransaction().add(R.id.favorites_pager, new FavoritesFragment()); */
     }
 
@@ -91,50 +109,38 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void initFavorites() {
+        final ListView favorites = (ListView) findViewById(R.id.listView);
+        String[] values = new String[]{
+                "Drink1",
+                "Drink2",
+                "Drink3",
+                "Drink4"
+        };
 
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1 ,values);
+        favorites.setAdapter(adapt);
 
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+        favorites.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        @Override
-        public Fragment getItem(int position) {
-            Fragment toReturn = null;
-            if(position == 0) {
-                toReturn = SearchFragment.newInstance(0);
-            } else if(position == 1) {
-                toReturn = HomeFragment.newInstance(1);
-            } else if(position == 2) {
-                toReturn = FavoritesFragment.newInstance(2);
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                // ListView Clicked item index
+                int itemPosition     = position;
+
+                // ListView Clicked item value
+                String  itemValue    = (String) favorites.getItemAtPosition(position);
+
+                // Show Alert
+                Intent openDetailedView = new Intent(MainActivity.this.getApplicationContext(), DetailedView.class);
+                openDetailedView.setAction(itemValue);
+                MainActivity.this.startActivity(openDetailedView);
+
             }
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return toReturn;
-        }
 
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-            }
-            return null;
-        }
+        });
     }
+
 }

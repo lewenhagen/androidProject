@@ -17,7 +17,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical">
-
+            <!-- TODO: Update blank fragment layout -->
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
@@ -27,41 +27,72 @@
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
-
+                <!-- Tab1 = SearchTab -->
                 <LinearLayout
                     android:id="@+id/tab1"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
+                    <!-- Components of SearchTab -->
+                    <EditText
+                        android:layout_width="294dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/editText"
+                        android:layout_gravity="left|top" />
 
-                    <android.support.v4.view.ViewPager
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/search_pager" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/do_search"
+                        android:id="@+id/button"
+                        android:layout_gravity="right|top" />
+
+                    <ExpandableListView
+                        android:layout_width="wrap_content"
+                        android:layout_height="465dp"
+                        android:id="@+id/expandableListView"
+                        android:layout_gravity="center_horizontal|bottom" />
+
                 </LinearLayout>
-
+                <!-- Tab2 = HomeTab -->
                 <LinearLayout
                     android:id="@+id/tab2"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
+                    <!-- Compontents of HomeTab -->
+                    <ImageView
+                        android:layout_width="181dp"
+                        android:layout_height="181dp"
+                        android:id="@+id/home_image"
+                        android:layout_gravity="center_horizontal|top"
+                        android:minHeight="50dp"
+                        android:minWidth="50dp"
+                        android:layout_marginTop="20dp"
+                        android:src="@drawable/ic_launcher" />
 
-                    <android.support.v4.view.ViewPager
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/pager" />
+                    <TextView
+                        android:layout_width="315dp"
+                        android:layout_height="291dp"
+                        android:text="New Text"
+                        android:id="@+id/home_releasenotes"
+                        android:layout_gravity="center_horizontal|bottom"
+                        android:background="#ffffffff"
+                        android:padding="10dp"
+                        android:layout_marginBottom="10dp" />
                 </LinearLayout>
-
+                <!-- favorites_tab = FavoritesTab -->
                 <LinearLayout
                     android:id="@+id/favorites_tab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
-
-                    <android.support.v4.view.ViewPager
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/favorites_pager" />
+                    <!-- Compontents of FavoritesTab -->
+                    <ListView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/listView"
+                        android:layout_gravity="left|top" />
                 </LinearLayout>
 
             </FrameLayout>
