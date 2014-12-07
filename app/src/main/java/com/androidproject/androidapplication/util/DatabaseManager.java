@@ -1,41 +1,98 @@
 package com.androidproject.androidapplication.util;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import android.content.Context;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.nfc.Tag;
 import android.util.Log;
 
-import java.io.IOException;
-import android.database.SQLException;
+public class DatabaseManager
+{
+    protected static final String TAG = "DatabaseManager";
 
-/**
- * Used to send requests to the database and return the result to the activity whom called it.
- */
-public final class DatabaseManager {
+    private final Context mContext;
+    private SQLiteDatabase mDb;
+    private DataBaseHelper mDbHelper;
 
-    private final String TAG = getClass().getSimpleName();
-    //The Android's default system path of your application database.
-    private final String DB_PATH = "/data/data/com.androidproject.androidapplication/databases/";
-
-    private final String DB_NAME = "drinkhelper";
-
-    private SQLiteDatabase myDataBase;
-
-    public DatabaseManager() {
-
+    public DatabaseManager(Context context)
+    {
+        this.mContext = context;
+        mDbHelper = new DataBaseHelper(mContext);
     }
 
-    public void openDataBase() throws SQLiteException {
-        try {
-            String myPath = DB_PATH + DB_NAME;
-            myDataBase = SQLiteDatabase.openOrCreateDatabase(myPath, null);
-            Log.i(TAG, "Database is open!");
-        } catch (android.database.SQLException e) {
-            e.printStackTrace();
+    public DatabaseManager createDatabase() throws SQLException
+    {
+        try
+        {
+            mDbHelper.createDataBase();
+        }
+        catch (IOException mIOException)
+        {
+            Log.e(TAG, mIOException.toString() + "  UnableToCreateDatabase");
+            throw new Error("UnableToCreateDatabase");
+        }
+        return this;
+    }
+
+    public DatabaseManager open() throws SQLException
+    {
+        try
+        {
+            mDbHelper.openDataBase();
+            mDbHelper.close();
+            mDb = mDbHelper.getReadableDatabase();
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, "open >>" + mSQLException.toString());
+            throw mSQLException;
+        }
+        return this;
+    }
+
+    public void close() {
+        mDbHelper.close();
+    }
+
+    public ArrayList<String> getCategories()
+    {
+        try
+        {
+            String sql ="SELECT * FROM Categories";
+            ArrayList<String> result = new ArrayList<String>();
+
+            Cursor mCur = mDb.rawQuery(sql, null);
+            while(mCur.moveToNext()){
+                result.add(mCur.getString(mCur.getColumnIndex("catName")));
+            }
+            return result;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
         }
     }
 
+    public ArrayList<String> getLiquidsByCategoryId(int id) {
+        try
+        {
+            String sql ="SELECT * FROM Cat_spec WHERE c_id = " + id;
+            ArrayList<String> result = new ArrayList<String>();
 
+            Cursor mCur = mDb.rawQuery(sql, null);
+            while(mCur.moveToNext()){
+                result.add(mCur.getString(mCur.getColumnIndex("name")));
+            }
+            return result;
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
+        }
+    }
 }

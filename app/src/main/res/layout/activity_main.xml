@@ -27,9 +27,8 @@
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
-                <!-- Tab1 = SearchTab -->
                 <LinearLayout
-                    android:id="@+id/tab1"
+                    android:id="@+id/searchTab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
@@ -37,26 +36,27 @@
                     <EditText
                         android:layout_width="294dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/editText"
+                        android:id="@+id/search_input_field"
                         android:layout_gravity="left|top" />
 
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/do_search"
-                        android:id="@+id/button"
+                        android:id="@+id/doSearch"
                         android:layout_gravity="right|top" />
 
                     <ExpandableListView
-                        android:layout_width="wrap_content"
-                        android:layout_height="465dp"
-                        android:id="@+id/expandableListView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:id="@+id/search_categories"
                         android:layout_gravity="center_horizontal|bottom" />
 
+
+
                 </LinearLayout>
-                <!-- Tab2 = HomeTab -->
                 <LinearLayout
-                    android:id="@+id/tab2"
+                    android:id="@+id/homeTab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
@@ -83,7 +83,7 @@
                 </LinearLayout>
                 <!-- favorites_tab = FavoritesTab -->
                 <LinearLayout
-                    android:id="@+id/favorites_tab"
+                    android:id="@+id/favoritesTab"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
                     android:orientation="vertical">
@@ -91,7 +91,7 @@
                     <ListView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/listView"
+                        android:id="@+id/favorites_listview"
                         android:layout_gravity="left|top" />
                 </LinearLayout>
 

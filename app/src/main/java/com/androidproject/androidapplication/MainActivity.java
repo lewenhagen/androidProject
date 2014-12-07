@@ -1,7 +1,9 @@
 package com.androidproject.androidapplication;
 
-import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import android.app.Activity;
@@ -24,65 +26,46 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.androidproject.androidapplication.util.DatabaseManager;
+import com.androidproject.androidapplication.util.ExpandableListAdapter;
 
 
 public class MainActivity extends Activity {
-
-
-    DatabaseManager dbm = new DatabaseManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-       /* mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        mViewPager.setCurrentItem(1); */
-
-        HomeFragment test = new HomeFragment();
 
         TabHost mTabHost = (TabHost) findViewById(R.id.tabHost);
         mTabHost.setup();
         TabHost.TabSpec mTabContent = mTabHost.newTabSpec("Search");
-        mTabContent.setContent(R.id.tab1);
+        mTabContent.setContent(R.id.searchTab);
         mTabContent.setIndicator("Search");
         mTabHost.addTab(mTabContent);
 
         mTabContent = mTabHost.newTabSpec("Home");
-        mTabContent.setContent(R.id.tab2);
+        mTabContent.setContent(R.id.homeTab);
         mTabContent.setIndicator("Home");
         mTabHost.addTab(mTabContent);
 
         mTabContent = mTabHost.newTabSpec("Favorites");
-        mTabContent.setContent(R.id.favorites_tab);
+        mTabContent.setContent(R.id.favoritesTab);
         mTabContent.setIndicator("Favorites");
         mTabHost.addTab(mTabContent);
 
         mTabHost.setCurrentTab(1);
 
         initFavorites();
-        dbm.openDataBase();
+        initSearchView();
 
-        String appPath = getApplicationContext().getFilesDir().getAbsolutePath();
-
-        Log.d("DIRECTORY",appPath);
-
-
-        //getFragmentManager().beginTransaction().add(R.id.search_pager, new HomeFragment());
-        /* getFragmentManager().beginTransaction().add(R.id.search_pager, new SearchFragment());
-        getFragmentManager().beginTransaction().add(R.id.favorites_pager, new FavoritesFragment()); */
     }
 
 
@@ -109,7 +92,7 @@ public class MainActivity extends Activity {
     }
 
     private void initFavorites() {
-        final ListView favorites = (ListView) findViewById(R.id.listView);
+        final ListView favorites = (ListView) findViewById(R.id.favorites_listview);
         String[] values = new String[]{
                 "Drink1",
                 "Drink2",
@@ -139,6 +122,35 @@ public class MainActivity extends Activity {
 
             }
 
+        });
+    }
+
+    private void initSearchView() {
+        DatabaseManager mDbHelper = new DatabaseManager(getApplicationContext());
+        mDbHelper.createDatabase();
+        mDbHelper.open();
+        ArrayList<String> result = mDbHelper.getCategories();
+
+
+        ExpandableListView searchListView = (ExpandableListView) findViewById(R.id.search_categories);
+        List<String> listDataHeader = new ArrayList<String>();
+        HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
+        ArrayList<List> content = new ArrayList<List>();
+
+        for(int i=0;i<result.size();i++) {
+            ArrayList<String> temp = mDbHelper.getLiquidsByCategoryId(i+1);
+            listDataChild.put(result.get(i), temp);
+            listDataHeader.add(result.get(i));
+        }
+        mDbHelper.close();
+        ExpandableListAdapter listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        searchListView.setAdapter(listAdapter);
+        searchListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Log.d("ListView", "Clicked: " + ((TextView) v.findViewById(R.id.lblListItem)).getText());
+                return false;
+            }
         });
     }
 
