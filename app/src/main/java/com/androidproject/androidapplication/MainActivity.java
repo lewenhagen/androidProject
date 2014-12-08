@@ -14,6 +14,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -130,8 +132,9 @@ public class MainActivity extends Activity {
         mDbHelper.createDatabase();
         mDbHelper.open();
         ArrayList<String> result = mDbHelper.getCategories();
-
-
+        ArrayList<Integer> temp2 = new ArrayList<Integer>(5);
+        temp2.add(1);temp2.add(1);temp2.add(2);temp2.add(3);temp2.add(4);
+        mDbHelper.performSearch(temp2);
         ExpandableListView searchListView = (ExpandableListView) findViewById(R.id.search_categories);
         List<String> listDataHeader = new ArrayList<String>();
         HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
@@ -149,9 +152,39 @@ public class MainActivity extends Activity {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Log.d("ListView", "Clicked: " + ((TextView) v.findViewById(R.id.lblListItem)).getText());
+
+                toggleSelected(((TextView) v.findViewById(R.id.lblListItem)));
                 return false;
             }
         });
     }
 
+    private void toggleSelected(TextView v) {
+
+        if(!v.isSelected()) {
+            v.setTextColor(getResources().getColor(R.color.green));
+            v.setSelected(true);
+        }
+        else{
+            v.setTextColor(getResources().getColor(R.color.defaultTextcolor));
+            v.setSelected(false);
+        }
+    }
+
+    private void doSearch() {
+        DatabaseManager mDbHelper = new DatabaseManager(getApplicationContext());
+        mDbHelper.createDatabase();
+        mDbHelper.open();
+        EditText searchInput = (EditText)findViewById(R.id.search_input_field);
+        String currInput = searchInput.getText().toString();
+
+
+        if(currInput != null && !currInput.isEmpty()) {
+            mDbHelper.performTextSearch(currInput);
+        }
+        else {
+            //mDbHelper.performSearch();
+        }
+
+    }
 }
