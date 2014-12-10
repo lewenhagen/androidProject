@@ -66,7 +66,7 @@ public class ResultView extends Activity {
 
     private void setupResultList() {
         List<String> listContent = args;
-
+        Log.d("RESULT CONTENT: ", ""+ args.toString());
         ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1 , listContent);
         this.resultList.setAdapter(adapt);
 

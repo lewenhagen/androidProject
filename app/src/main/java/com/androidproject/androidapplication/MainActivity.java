@@ -137,9 +137,6 @@ public class MainActivity extends Activity {
         mDbHelper.createDatabase();
         mDbHelper.open();
         ArrayList<String> result = mDbHelper.getCategories();
-        ArrayList<Integer> temp2 = new ArrayList<Integer>(5);
-        temp2.add(1);temp2.add(1);temp2.add(2);temp2.add(3);temp2.add(4);
-        mDbHelper.performSearch(temp2);
         ExpandableListView searchListView = (ExpandableListView) findViewById(R.id.search_categories);
         List<String> listDataHeader = new ArrayList<String>();
         HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
@@ -210,7 +207,7 @@ public class MainActivity extends Activity {
         }
         else {
             resultOfSearch = mDbHelper.performSearch(mDbHelper.getIdByName(allSelected));
-            reset();
+            //reset();
             allSelected.clear();
         }
 

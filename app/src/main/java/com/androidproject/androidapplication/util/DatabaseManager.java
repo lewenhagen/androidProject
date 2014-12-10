@@ -164,8 +164,9 @@ public class DatabaseManager
 
 
         Log.d("EEEEEEEEEEEEEEEEEEEEEEEE: ", finalResult.toString());
-        Log.d("DKGLJDSLKJFK", result.toString());
-        return getNamesById(result);
+        Log.d("DKGLJDSLKJFK", ""+getNamesById(result));
+        ArrayList<String> holder2 = getNamesById(finalResult);
+        return holder2;
 
     }
 
@@ -173,7 +174,7 @@ public class DatabaseManager
         ArrayList<String> result = new ArrayList<String>();
         try
         {
-            String sql = "SELECT name FROM Drinks WHERE name = %" + input + "%";
+            String sql = "SELECT name FROM Drinks WHERE name = %'" + input + "'%";
             Cursor mCur = mDb.rawQuery(sql, null);
             while (mCur.moveToNext()) {
                 result.add(mCur.getString(mCur.getColumnIndex("name")));
@@ -214,11 +215,16 @@ public class DatabaseManager
 
     public ArrayList<Integer> getIdByName(ArrayList<String> args) {
         ArrayList<Integer> result = new ArrayList<Integer>();
+        Log.d("GET ID BY NAME ARGS: ", args.toString());
         try
         {   for(String name : args) {
-                String sql = "SELECT id FROM Drinks WHERE name = '" + name + "' LIMIT 1";
+            Log.d("SHIT 1: ", name);
+                String sql = "SELECT id FROM Drinks WHERE name = '" + name + "'";
                 Cursor mCur = mDb.rawQuery(sql, null);
+                //mCur.moveToFirst();
+            Log.d("SHIT 2: ", "in raw");
                 while (mCur.moveToNext()) {
+                    Log.d("INSIDE WHILE: ", ""+ mCur.getInt(mCur.getColumnIndex("id")));
                     result.add(mCur.getInt(mCur.getColumnIndex("id")));
                 }
             }
@@ -234,6 +240,7 @@ public class DatabaseManager
 
     public ArrayList<String> getNamesById(ArrayList<Integer> args) {
         ArrayList<String> result = new ArrayList<String>();
+        Log.d("GET NAMES BY ID ARGS: ", args.toString());
         try
         {   for(int id : args) {
                 String sql = "SELECT name FROM Drinks WHERE id = " + id + " LIMIT 1";
@@ -248,7 +255,7 @@ public class DatabaseManager
             Log.e(TAG, mSQLException.toString());
             throw mSQLException;
         }
-
+        Log.d("GET NAMES BY ID RESULT: ", result.toString());
         return result;
     }
 
