@@ -191,7 +191,7 @@ public class MainActivity extends Activity {
         mDbHelper.open();
         EditText searchInput = (EditText)findViewById(R.id.search_input_field);
         String currInput = searchInput.getText().toString();
-        int[] resultOfSearch = null;
+        ArrayList<Integer> resultOfSearch = null;
 
         if(currInput != null && !currInput.isEmpty()) {
             //resultOfSearch = mDbHelper.performTextSearch(currInput);
@@ -201,7 +201,9 @@ public class MainActivity extends Activity {
         }
 
         Intent startResultView = new Intent(this, ResultView.class);
-        startResultView.putExtra("result",resultOfSearch);
+        Bundle args = new Bundle();
+        args.putIntegerArrayList("result",resultOfSearch);
+        startResultView.putExtras(args);
         startActivity(startResultView);
     }
 }
