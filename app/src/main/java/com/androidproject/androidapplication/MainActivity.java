@@ -39,6 +39,8 @@ import android.widget.Toast;
 import com.androidproject.androidapplication.util.DatabaseManager;
 import com.androidproject.androidapplication.util.ExpandableListAdapter;
 
+import org.w3c.dom.Text;
+
 
 public class MainActivity extends Activity {
 
@@ -148,7 +150,7 @@ public class MainActivity extends Activity {
             listDataHeader.add(result.get(i));
         }
         mDbHelper.close();
-        ExpandableListAdapter listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+        final ExpandableListAdapter listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
         searchListView.setAdapter(listAdapter);
         searchListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
@@ -174,24 +176,22 @@ public class MainActivity extends Activity {
     private void toggleSelected(TextView v) {
 
         if(!v.isSelected()) {
-            v.setTextColor(getResources().getColor(R.color.green));
+            v.setBackgroundColor(getResources().getColor(R.color.green));
             v.setSelected(true);
             allSelected.add(v.getText().toString());
+            Toast.makeText(getApplicationContext(), v.getText() + " added", Toast.LENGTH_SHORT).show();
         }
         else{
-            v.setTextColor(getResources().getColor(R.color.defaultTextcolor));
+            v.setBackgroundColor(getResources().getColor(R.color.white));
             v.setSelected(false);
             allSelected.remove(v.getText().toString());
+            Toast.makeText(getApplicationContext(), v.getText() + " removed", Toast.LENGTH_SHORT).show();
         }
+        Log.d("CONTENT OF ALLSELECTED: ", allSelected.toString());
     }
 
     private void reset() {
-        ExpandableListView searchListView = (ExpandableListView) findViewById(R.id.search_categories);
-        for(int i = 0; i < searchListView.getCount(); i++) {
-            if(searchListView.getChildAt(i).isSelected()) {
-                searchListView.getChildAt(i).setSelected(false);
-            }
-        }
+
     }
 
     private void doSearch() {
@@ -207,7 +207,8 @@ public class MainActivity extends Activity {
         }
         else {
             resultOfSearch = mDbHelper.performSearch(mDbHelper.getIdByName(allSelected));
-            //reset();
+
+            reset();
             allSelected.clear();
         }
         mDbHelper.close();
