@@ -110,6 +110,7 @@ public class DatabaseManager
 
     public ArrayList<String> performSearch(ArrayList<Integer> searchItems) {
         ArrayList<Integer> result = new ArrayList<Integer>();
+        Log.d("Performsearch args", searchItems.toString());
         try
         {
             for(int i = 0; i < searchItems.size(); i++) {
@@ -162,11 +163,8 @@ public class DatabaseManager
             }
         }
 
-
-        Log.d("EEEEEEEEEEEEEEEEEEEEEEEE: ", finalResult.toString());
-        Log.d("DKGLJDSLKJFK", ""+getNamesById(result));
-        ArrayList<String> holder2 = getNamesById(finalResult);
-        return holder2;
+        Log.d("Found drinks: ", getNamesById(finalResult).toString());
+        return getNamesById(finalResult);
 
     }
 
@@ -219,9 +217,8 @@ public class DatabaseManager
         try
         {   for(String name : args) {
             Log.d("SHIT 1: ", name);
-                String sql = "SELECT id FROM Drinks WHERE name = '" + name + "'";
+                String sql = "SELECT id FROM Cat_spec WHERE name = '" + name + "'";
                 Cursor mCur = mDb.rawQuery(sql, null);
-                //mCur.moveToFirst();
             Log.d("SHIT 2: ", "in raw");
                 while (mCur.moveToNext()) {
                     Log.d("INSIDE WHILE: ", ""+ mCur.getInt(mCur.getColumnIndex("id")));

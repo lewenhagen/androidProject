@@ -210,6 +210,7 @@ public class MainActivity extends Activity {
             //reset();
             allSelected.clear();
         }
+        mDbHelper.close();
 
         Intent startResultView = new Intent(this, ResultView.class);
         Bundle args = new Bundle();
