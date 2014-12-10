@@ -77,6 +77,12 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        this.onCreate(null);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -127,7 +133,6 @@ public class MainActivity extends Activity {
                 Intent openDetailedView = new Intent(MainActivity.this.getApplicationContext(), DetailedView.class);
                 openDetailedView.setAction(itemValue);
                 MainActivity.this.startActivity(openDetailedView);
-
             }
 
         });

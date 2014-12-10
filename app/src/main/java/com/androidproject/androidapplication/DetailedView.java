@@ -129,18 +129,33 @@ public class DetailedView extends Activity {
     }
 
     private void setupDetailedView() {
-        DatabaseManager mDbHelper = new DatabaseManager(getApplicationContext());
+        final DatabaseManager mDbHelper = new DatabaseManager(getApplicationContext());
         mDbHelper.createDatabase();
         mDbHelper.open();
-        Bundle drinkInfo = mDbHelper.getDrink(this.recipeTitle);
+        final Bundle drinkInfo = mDbHelper.getDrink(this.recipeTitle);
+        final CheckBox chbox = ((CheckBox) findViewById(R.id.detailedview_addtofavorites));
+
+        if(mDbHelper.isItFavorite(drinkInfo.getString("name")) == 1) {
+            chbox.setChecked(true);
+        }
 
         ((TextView) findViewById(R.id.recipe_title)).setText(drinkInfo.getString("name"));
         ((RatingBar) findViewById(R.id.detailedview_ratingBar)).setNumStars(5);
         ((RatingBar) findViewById(R.id.detailedview_ratingBar)).setRating(drinkInfo.getInt("stars"));
-        ((CheckBox) findViewById(R.id.detailedview_addtofavorites)).setOnClickListener(new View.OnClickListener() {
+
+        chbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Checkbox","clicked!");
+                if(chbox.isChecked()) {
+                    Log.d("Checkbox","CHECKED! " + drinkInfo.getString("name"));
+                    mDbHelper.addToFav(drinkInfo.getString("name"));
+
+
+                }else {
+                    Log.d("Checkbox","UNCHECKED!");
+                    mDbHelper.removeFromFav(drinkInfo.getString("name"));
+                }
+
             }
         });
 

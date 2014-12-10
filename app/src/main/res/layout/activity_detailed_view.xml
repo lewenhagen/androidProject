@@ -38,7 +38,7 @@
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/detailed_view_addtofavorites"
+        android:text="Is this a favorite?"
         android:id="@+id/detailedview_addtofavorites"
         android:layout_gravity="center"
         android:layout_marginTop="110dp"

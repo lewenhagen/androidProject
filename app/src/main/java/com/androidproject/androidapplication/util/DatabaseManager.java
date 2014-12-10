@@ -172,7 +172,7 @@ public class DatabaseManager
         ArrayList<String> result = new ArrayList<String>();
         try
         {
-            String sql = "SELECT name FROM Drinks WHERE name = %'" + input + "'%";
+            String sql = "SELECT name FROM Drinks WHERE name = '%" + input + "%'";
             Cursor mCur = mDb.rawQuery(sql, null);
             while (mCur.moveToNext()) {
                 result.add(mCur.getString(mCur.getColumnIndex("name")));
@@ -274,6 +274,52 @@ public class DatabaseManager
 
     }
 
+    public void removeFromFav(String drinkToRemove) {
+        try
+        {
+            Log.d("Removes from DB", drinkToRemove);
+            String sql = "UPDATE Drinks SET isFavorite=0 WHERE name = '" + drinkToRemove + "'";
+            mDb.execSQL(sql);
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
+        }
+    }
 
+    public void addToFav(String drinkToAdd) {
+        try
+        {
+            Log.d("Adds to DB", drinkToAdd);
+            String sql = "UPDATE Drinks SET isFavorite=1 WHERE name = '" + drinkToAdd + "'";
+            mDb.execSQL(sql);
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
+        }
+    }
+
+    public int isItFavorite(String checkThis) {
+        int isFav = -1;
+
+        try
+        {
+            String sql = "SELECT isFavorite FROM Drinks WHERE name = '" + checkThis + "'";
+            Cursor mCur = mDb.rawQuery(sql, null);
+            while (mCur.moveToNext()) {
+                isFav = mCur.getInt(mCur.getColumnIndex("isFavorite"));
+            }
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
+        }
+
+        return isFav;
+    }
 }
 
