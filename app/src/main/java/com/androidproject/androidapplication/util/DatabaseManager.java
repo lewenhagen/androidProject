@@ -321,5 +321,19 @@ public class DatabaseManager
 
         return isFav;
     }
+
+    public void setStars(String drinkName, int nrOfStars) {
+
+        try
+        {
+            String sql = "UPDATE Drinks SET stars=" + nrOfStars + " WHERE name = '" + drinkName + "'";
+            mDb.execSQL(sql);
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
+        }
+    }
 }
 
