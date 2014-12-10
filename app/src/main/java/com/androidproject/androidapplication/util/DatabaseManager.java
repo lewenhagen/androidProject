@@ -216,7 +216,7 @@ public class DatabaseManager
         ArrayList<Integer> result = new ArrayList<Integer>();
         try
         {   for(String name : args) {
-                String sql = "SELECT id FROM Drinks WHERE name = " + name + " LIMIT 1";
+                String sql = "SELECT id FROM Drinks WHERE name = '" + name + "' LIMIT 1";
                 Cursor mCur = mDb.rawQuery(sql, null);
                 while (mCur.moveToNext()) {
                     result.add(mCur.getInt(mCur.getColumnIndex("id")));
