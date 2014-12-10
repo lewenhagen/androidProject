@@ -203,7 +203,7 @@ public class MainActivity extends Activity {
         mDbHelper.open();
         EditText searchInput = (EditText)findViewById(R.id.search_input_field);
         String currInput = searchInput.getText().toString();
-        ArrayList<Integer> resultOfSearch = new ArrayList<Integer>();
+        ArrayList<String> resultOfSearch = new ArrayList<String>();
 
         if(currInput != null && !currInput.isEmpty()) {
             resultOfSearch = mDbHelper.performTextSearch(currInput);
@@ -216,7 +216,7 @@ public class MainActivity extends Activity {
 
         Intent startResultView = new Intent(this, ResultView.class);
         Bundle args = new Bundle();
-        args.putIntegerArrayList("result",resultOfSearch);
+        args.putStringArrayList("result",resultOfSearch);
         startResultView.putExtras(args);
         startActivity(startResultView);
     }

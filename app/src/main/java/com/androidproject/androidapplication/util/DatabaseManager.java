@@ -1,6 +1,7 @@
 package com.androidproject.androidapplication.util;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,6 +13,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.nfc.Tag;
+import android.os.Bundle;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -105,7 +108,7 @@ public class DatabaseManager
         }
     }
 
-    public ArrayList<Integer> performSearch(ArrayList<Integer> searchItems) {
+    public ArrayList<String> performSearch(ArrayList<Integer> searchItems) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         try
         {
@@ -158,20 +161,22 @@ public class DatabaseManager
                 Log.d("ERROR IN KEYS STUFF: ", e.toString());
             }
         }
+
+
         Log.d("EEEEEEEEEEEEEEEEEEEEEEEE: ", finalResult.toString());
         Log.d("DKGLJDSLKJFK", result.toString());
-        return finalResult;
+        return getNamesById(result);
 
     }
 
-    public ArrayList<Integer> performTextSearch(String input) {
-        ArrayList<Integer> result = new ArrayList<Integer>();
+    public ArrayList<String> performTextSearch(String input) {
+        ArrayList<String> result = new ArrayList<String>();
         try
         {
-            String sql = "SELECT id FROM Drinks WHERE name = %" + input + "%";
+            String sql = "SELECT name FROM Drinks WHERE name = %" + input + "%";
             Cursor mCur = mDb.rawQuery(sql, null);
             while (mCur.moveToNext()) {
-                result.add(mCur.getInt(mCur.getColumnIndex("id")));
+                result.add(mCur.getString(mCur.getColumnIndex("name")));
             }
         }
         catch (SQLException mSQLException)
@@ -181,5 +186,72 @@ public class DatabaseManager
         }
         return result;
     }
+
+    public Bundle selectRowFromDrinks(int id, String table) {
+        Bundle returnBundle = new Bundle();
+
+        try
+        {
+            String sql = "SELECT * FROM " + table + " WHERE id = " + id + " LIMIT 1";
+            Cursor mCur = mDb.rawQuery(sql, null);
+            while (mCur.moveToNext()) {
+                returnBundle.putInt("id",mCur.getInt(mCur.getColumnIndex("id")));
+                returnBundle.putString("name",mCur.getString(mCur.getColumnIndex("name")));
+                returnBundle.putInt("stars",mCur.getInt(mCur.getColumnIndex("starts")));
+                returnBundle.putString("image",mCur.getString(mCur.getColumnIndex("image")));
+                returnBundle.putString("howtodo",mCur.getString(mCur.getColumnIndex("howtodo")));
+            }
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
+        }
+
+
+        return returnBundle;
+    }
+
+    public ArrayList<Integer> getIdByName(ArrayList<String> args) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        try
+        {   for(String name : args) {
+                String sql = "SELECT id FROM Drinks WHERE name = " + name + " LIMIT 1";
+                Cursor mCur = mDb.rawQuery(sql, null);
+                while (mCur.moveToNext()) {
+                    result.add(mCur.getInt(mCur.getColumnIndex("id")));
+                }
+            }
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
+        }
+
+        return result;
+    }
+
+    public ArrayList<String> getNamesById(ArrayList<Integer> args) {
+        ArrayList<String> result = new ArrayList<String>();
+        try
+        {   for(int id : args) {
+                String sql = "SELECT name FROM Drinks WHERE id = " + id + " LIMIT 1";
+                Cursor mCur = mDb.rawQuery(sql, null);
+                while (mCur.moveToNext()) {
+                    result.add(mCur.getString(mCur.getColumnIndex("name")));
+                }
+            }
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
+        }
+
+        return result;
+    }
+
+
 }
 

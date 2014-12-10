@@ -8,7 +8,7 @@
 
     <TextView android:text="@string/result" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/"
+        android:id="@+id/result_textview"
         android:textSize="30dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
@@ -16,8 +16,8 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/"
+        android:id="@+id/result_list_view"
+        android:layout_below="@+id/result_backbutton"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -25,10 +25,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/result_backbutton"
-        android:id="@+id/button"
+        android:id="@+id/result_backbutton"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/listView"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>
