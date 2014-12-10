@@ -151,7 +151,6 @@ public class DatabaseManager
                     finalResult.add(0, key);
                 }
                 else {
-
                     finalResult.add(key);
                 }
             }
@@ -159,15 +158,28 @@ public class DatabaseManager
                 Log.d("ERROR IN KEYS STUFF: ", e.toString());
             }
         }
-
         Log.d("EEEEEEEEEEEEEEEEEEEEEEEE: ", finalResult.toString());
         Log.d("DKGLJDSLKJFK", result.toString());
         return finalResult;
 
     }
 
-    public void performTextSearch(String input) {
-
+    public ArrayList<Integer> performTextSearch(String input) {
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        try
+        {
+            String sql = "SELECT id FROM Drinks WHERE name = %" + input + "%";
+            Cursor mCur = mDb.rawQuery(sql, null);
+            while (mCur.moveToNext()) {
+                result.add(mCur.getInt(mCur.getColumnIndex("id")));
+            }
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
+        }
+        return result;
     }
 }
 
