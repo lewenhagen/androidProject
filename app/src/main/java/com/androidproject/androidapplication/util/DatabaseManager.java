@@ -186,19 +186,22 @@ public class DatabaseManager
         return result;
     }
 
-    public Bundle selectRowFromDrinks(int id, String table) {
+    public Bundle getDrink(String name) {
         Bundle returnBundle = new Bundle();
-
+        Log.d("Drink: ", name);
         try
         {
-            String sql = "SELECT * FROM " + table + " WHERE id = " + id + " LIMIT 1";
+            String sql = "SELECT * FROM Drinks WHERE name = '" + name + "'";
             Cursor mCur = mDb.rawQuery(sql, null);
+            Log.d("MCUR",mCur.toString());
             while (mCur.moveToNext()) {
-                returnBundle.putInt("id",mCur.getInt(mCur.getColumnIndex("id")));
-                returnBundle.putString("name",mCur.getString(mCur.getColumnIndex("name")));
-                returnBundle.putInt("stars",mCur.getInt(mCur.getColumnIndex("starts")));
-                returnBundle.putString("image",mCur.getString(mCur.getColumnIndex("image")));
-                returnBundle.putString("howtodo",mCur.getString(mCur.getColumnIndex("howtodo")));
+
+                returnBundle.putInt("id", mCur.getInt(mCur.getColumnIndex("id")));
+                returnBundle.putString("name", mCur.getString(mCur.getColumnIndex("name")));
+                returnBundle.putInt("stars", mCur.getInt(mCur.getColumnIndex("stars")));
+                returnBundle.putString("image", mCur.getString(mCur.getColumnIndex("image")));
+                returnBundle.putString("howtodo", mCur.getString(mCur.getColumnIndex("howtodo")));
+                Log.d("RETURNBUNDLE: ", returnBundle.toString());
             }
         }
         catch (SQLException mSQLException)
@@ -213,15 +216,11 @@ public class DatabaseManager
 
     public ArrayList<Integer> getIdByName(ArrayList<String> args) {
         ArrayList<Integer> result = new ArrayList<Integer>();
-        Log.d("GET ID BY NAME ARGS: ", args.toString());
         try
         {   for(String name : args) {
-            Log.d("SHIT 1: ", name);
                 String sql = "SELECT id FROM Cat_spec WHERE name = '" + name + "'";
                 Cursor mCur = mDb.rawQuery(sql, null);
-            Log.d("SHIT 2: ", "in raw");
                 while (mCur.moveToNext()) {
-                    Log.d("INSIDE WHILE: ", ""+ mCur.getInt(mCur.getColumnIndex("id")));
                     result.add(mCur.getInt(mCur.getColumnIndex("id")));
                 }
             }
@@ -237,7 +236,6 @@ public class DatabaseManager
 
     public ArrayList<String> getNamesById(ArrayList<Integer> args) {
         ArrayList<String> result = new ArrayList<String>();
-        Log.d("GET NAMES BY ID ARGS: ", args.toString());
         try
         {   for(int id : args) {
                 String sql = "SELECT name FROM Drinks WHERE id = " + id + " LIMIT 1";
@@ -252,8 +250,28 @@ public class DatabaseManager
             Log.e(TAG, mSQLException.toString());
             throw mSQLException;
         }
-        Log.d("GET NAMES BY ID RESULT: ", result.toString());
+
         return result;
+    }
+
+    public ArrayList<String> getAllFavorites() {
+        ArrayList<String> result = new ArrayList<String>();
+        try
+        {
+            String sql = "SELECT name FROM Drinks WHERE isFavorite = 1";
+            Cursor mCur = mDb.rawQuery(sql, null);
+            while (mCur.moveToNext()) {
+                result.add(mCur.getString(mCur.getColumnIndex("name")));
+            }
+        }
+        catch (SQLException mSQLException)
+        {
+            Log.e(TAG, mSQLException.toString());
+            throw mSQLException;
+        }
+
+        return result;
+
     }
 
 

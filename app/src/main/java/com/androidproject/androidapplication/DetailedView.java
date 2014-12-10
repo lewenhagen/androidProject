@@ -1,8 +1,10 @@
 package com.androidproject.androidapplication;
 
+import com.androidproject.androidapplication.util.DatabaseManager;
 import com.androidproject.androidapplication.util.SystemUiHider;
 
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +12,10 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 
 /**
@@ -19,33 +25,14 @@ import android.view.View;
  * @see SystemUiHider
  */
 public class DetailedView extends Activity {
-    /**
-     * Whether or not the system UI should be auto-hidden after
-     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-     */
+
     private static final boolean AUTO_HIDE = true;
-
-    /**
-     * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-     * user interaction before hiding the system UI.
-     */
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
-
-    /**
-     * If set, will toggle the system UI visibility upon interaction. Otherwise,
-     * will show the system UI visibility upon interaction.
-     */
     private static final boolean TOGGLE_ON_CLICK = true;
-
-    /**
-     * The flags to pass to {@link SystemUiHider#getInstance}.
-     */
     private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
 
-    /**
-     * The instance of the {@link SystemUiHider} for this activity.
-     */
     private SystemUiHider mSystemUiHider;
+    private String recipeTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +40,8 @@ public class DetailedView extends Activity {
 
         setContentView(R.layout.activity_detailed_view);
 
-        final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
+        recipeTitle = getIntent().getAction();
 
         Log.d("DetailedView", getIntent().getAction());
         // Set up an instance of SystemUiHider to control the system UI for
@@ -63,34 +50,10 @@ public class DetailedView extends Activity {
         mSystemUiHider.setup();
         mSystemUiHider
                 .setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
-                    // Cached values.
-                    int mControlsHeight;
-                    int mShortAnimTime;
 
                     @Override
                     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
                     public void onVisibilityChange(boolean visible) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                            // If the ViewPropertyAnimator API is available
-                            // (Honeycomb MR2 and later), use it to animate the
-                            // in-layout UI controls at the bottom of the
-                            // screen.
-                            if (mControlsHeight == 0) {
-                                mControlsHeight = controlsView.getHeight();
-                            }
-                            if (mShortAnimTime == 0) {
-                                mShortAnimTime = getResources().getInteger(
-                                        android.R.integer.config_shortAnimTime);
-                            }
-                            controlsView.animate()
-                                    .translationY(visible ? 0 : mControlsHeight)
-                                    .setDuration(mShortAnimTime);
-                        } else {
-                            // If the ViewPropertyAnimator APIs aren't
-                            // available, simply show or hide the in-layout UI
-                            // controls.
-                            controlsView.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        }
 
                         if (visible && AUTO_HIDE) {
                             // Schedule a hide().
@@ -114,7 +77,12 @@ public class DetailedView extends Activity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        //findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
+
+        setupDetailedView();
     }
 
     @Override
@@ -159,4 +127,27 @@ public class DetailedView extends Activity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
+    private void setupDetailedView() {
+        DatabaseManager mDbHelper = new DatabaseManager(getApplicationContext());
+        mDbHelper.createDatabase();
+        mDbHelper.open();
+        Bundle drinkInfo = mDbHelper.getDrink(this.recipeTitle);
+
+        ((TextView) findViewById(R.id.recipe_title)).setText(drinkInfo.getString("name"));
+        ((RatingBar) findViewById(R.id.detailedview_ratingBar)).setNumStars(5);
+        ((RatingBar) findViewById(R.id.detailedview_ratingBar)).setRating(drinkInfo.getInt("stars"));
+        ((CheckBox) findViewById(R.id.detailedview_addtofavorites)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Checkbox","clicked!");
+            }
+        });
+
+        ((TextView) findViewById(R.id.recipe_text)).setText(drinkInfo.getString("howtodo"));
+
+
+
+    }
+
 }

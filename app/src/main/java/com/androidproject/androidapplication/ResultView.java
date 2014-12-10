@@ -1,6 +1,7 @@
 package com.androidproject.androidapplication;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,15 +21,17 @@ import java.util.List;
 
 public class ResultView extends Activity {
 
+    private final String TAG = ResultView.class.getSimpleName();
     private ArrayList<String> args;
     private ListView resultList;
     private Button backButton;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result_view);
-
+        this.mContext = this;
         this.args = getIntent().getExtras().getStringArrayList("result");
         this.resultList = (ListView) findViewById(R.id.result_list_view);
         this.backButton = (Button) findViewById(R.id.result_backbutton);
@@ -36,6 +39,7 @@ public class ResultView extends Activity {
             @Override
             public void onClick(View v) {
                 Log.d("ResultView","Destroy, go back!");
+                finish();
             }
         });
         setupResultList();
@@ -82,7 +86,10 @@ public class ResultView extends Activity {
                 // ListView Clicked item value
                 String  itemValue    = (String) resultList.getItemAtPosition(position);
 
-
+                Log.d(TAG,"Show recipe for: " + itemValue);
+                Intent detailedView = new Intent(mContext, DetailedView.class);
+                detailedView.setAction(itemValue);
+                mContext.startActivity(detailedView);
             }
 
         });

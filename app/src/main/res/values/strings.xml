@@ -20,5 +20,8 @@
     <string name="title_activity_result_view">ResultView</string>
     <string name="result">Result</string>
     <string name="result_backbutton">Go back</string>
+    <string name="recipe_title">error</string>
+    <string name="detailed_view_addtofavorites">Add to Favorites</string>
+    <string name="recipe_text">error</string>
 
 </resources>

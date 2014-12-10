@@ -102,12 +102,11 @@ public class MainActivity extends Activity {
 
     private void initFavorites() {
         final ListView favorites = (ListView) findViewById(R.id.favorites_listview);
-        String[] values = new String[]{
-                "Drink1",
-                "Drink2",
-                "Drink3",
-                "Drink4"
-        };
+        DatabaseManager mDbHelper = new DatabaseManager(getApplicationContext());
+        mDbHelper.createDatabase();
+        mDbHelper.open();
+        List<String> values = mDbHelper.getAllFavorites();
+        mDbHelper.close();
 
         ArrayAdapter<String> adapt = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1 ,values);
         favorites.setAdapter(adapt);
