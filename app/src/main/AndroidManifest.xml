@@ -22,6 +22,10 @@
             android:label="@string/title_activity_detailed_view"
             android:theme="@style/FullscreenTheme" >
         </activity>
+        <activity
+            android:name="com.androidproject.androidapplication.ResultView"
+            android:label="@string/title_activity_result_view" >
+        </activity>
     </application>
 
 </manifest>

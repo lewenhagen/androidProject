@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
 import android.graphics.drawable.ColorDrawable;
+import android.nfc.Tag;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -27,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
@@ -39,6 +41,8 @@ import com.androidproject.androidapplication.util.ExpandableListAdapter;
 
 
 public class MainActivity extends Activity {
+
+    private final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,6 +161,16 @@ public class MainActivity extends Activity {
                 return false;
             }
         });
+
+        Button searchButton = (Button) findViewById(R.id.doSearch);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Perform search.");
+                doSearch();
+            }
+        });
     }
 
     private void toggleSelected(TextView v) {
@@ -177,14 +191,17 @@ public class MainActivity extends Activity {
         mDbHelper.open();
         EditText searchInput = (EditText)findViewById(R.id.search_input_field);
         String currInput = searchInput.getText().toString();
-
+        int[] resultOfSearch = null;
 
         if(currInput != null && !currInput.isEmpty()) {
-            mDbHelper.performTextSearch(currInput);
+            //resultOfSearch = mDbHelper.performTextSearch(currInput);
         }
         else {
-            //mDbHelper.performSearch();
+            //resultOfSearch = mDbHelper.performSearch();
         }
 
+        Intent startResultView = new Intent(this, ResultView.class);
+        startResultView.putExtra("result",resultOfSearch);
+        startActivity(startResultView);
     }
 }
