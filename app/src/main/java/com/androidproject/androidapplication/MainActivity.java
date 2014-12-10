@@ -43,6 +43,7 @@ import com.androidproject.androidapplication.util.ExpandableListAdapter;
 public class MainActivity extends Activity {
 
     private final String TAG = MainActivity.class.getSimpleName();
+    private ArrayList<String> allSelected = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,10 +179,21 @@ public class MainActivity extends Activity {
         if(!v.isSelected()) {
             v.setTextColor(getResources().getColor(R.color.green));
             v.setSelected(true);
+            allSelected.add(v.getText().toString());
         }
         else{
             v.setTextColor(getResources().getColor(R.color.defaultTextcolor));
             v.setSelected(false);
+            allSelected.remove(v.getText().toString());
+        }
+    }
+
+    private void reset() {
+        ExpandableListView searchListView = (ExpandableListView) findViewById(R.id.search_categories);
+        for(int i = 0; i < searchListView.getCount(); i++) {
+            if(searchListView.getChildAt(i).isSelected()) {
+                searchListView.getChildAt(i).setSelected(false);
+            }
         }
     }
 
@@ -191,13 +203,15 @@ public class MainActivity extends Activity {
         mDbHelper.open();
         EditText searchInput = (EditText)findViewById(R.id.search_input_field);
         String currInput = searchInput.getText().toString();
-        ArrayList<Integer> resultOfSearch = null;
+        ArrayList<Integer> resultOfSearch = new ArrayList<Integer>();
 
         if(currInput != null && !currInput.isEmpty()) {
-            //resultOfSearch = mDbHelper.performTextSearch(currInput);
+            resultOfSearch = mDbHelper.performTextSearch(currInput);
         }
         else {
-            //resultOfSearch = mDbHelper.performSearch();
+            resultOfSearch = mDbHelper.performSearch(mDbHelper.getIdByName(allSelected));
+            reset();
+            allSelected.clear();
         }
 
         Intent startResultView = new Intent(this, ResultView.class);
