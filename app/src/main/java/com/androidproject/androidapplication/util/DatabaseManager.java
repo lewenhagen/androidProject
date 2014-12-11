@@ -13,6 +13,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
@@ -170,12 +171,20 @@ public class DatabaseManager
 
     public ArrayList<String> performTextSearch(String input) {
         ArrayList<String> result = new ArrayList<String>();
+
+        if(input.charAt(input.length()-1) == ' ') {
+            input = input.substring(0, input.length()-1);
+        }
+
         try
         {
-            String sql = "SELECT name FROM Drinks WHERE name = '%" + input + "%'";
+            String sql = "SELECT name FROM Drinks WHERE name LIKE '%" + input + "%'";
+
             Cursor mCur = mDb.rawQuery(sql, null);
+            Log.d(TAG,"Result from query: " + mCur.toString());
             while (mCur.moveToNext()) {
                 result.add(mCur.getString(mCur.getColumnIndex("name")));
+                Log.d(TAG,"Query found: " + mCur.getString(mCur.getColumnIndex("name")));
             }
         }
         catch (SQLException mSQLException)
@@ -183,6 +192,8 @@ public class DatabaseManager
             Log.e(TAG, mSQLException.toString());
             throw mSQLException;
         }
+
+
         return result;
     }
 
