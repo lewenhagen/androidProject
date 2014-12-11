@@ -23,5 +23,6 @@
     <string name="recipe_title">error</string>
     <string name="detailed_view_addtofavorites">Add to Favorites</string>
     <string name="recipe_text">error</string>
+    <string name="reset_search">Reset</string>
 
 </resources>
