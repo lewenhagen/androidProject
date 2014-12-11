@@ -135,7 +135,7 @@ public class DetailedView extends Activity {
         mDbHelper.open();
         final Bundle drinkInfo = mDbHelper.getDrink(this.recipeTitle);
         final CheckBox chbox = ((CheckBox) findViewById(R.id.detailedview_addtofavorites));
-        RatingBar rating = ((RatingBar) findViewById(R.id.detailedview_ratingBar));
+        final RatingBar rating = ((RatingBar) findViewById(R.id.detailedview_ratingBar));
 
 
         if(mDbHelper.isItFavorite(drinkInfo.getString("name")) == 1) {
@@ -146,9 +146,19 @@ public class DetailedView extends Activity {
         rating.setNumStars(5);
         rating.setRating(drinkInfo.getInt("stars"));
 
+        rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+            public void onRatingChanged(RatingBar ratingBar, float ratings,  boolean fromUser) {
+
+                Log.d("NEW STARS: ", rating.getRating() + "");
+
+            }
+
+        });
 
 
-                chbox.setOnClickListener(new View.OnClickListener() {
+
+        chbox.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (chbox.isChecked()) {
