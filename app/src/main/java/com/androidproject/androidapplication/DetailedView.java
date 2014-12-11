@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -149,11 +150,12 @@ public class DetailedView extends Activity {
                 if(chbox.isChecked()) {
                     Log.d("Checkbox","CHECKED! " + drinkInfo.getString("name"));
                     mDbHelper.addToFav(drinkInfo.getString("name"));
-
+                    Toast.makeText(getApplicationContext(), drinkInfo.getString("name") + " added to favorites!", Toast.LENGTH_SHORT).show();
 
                 }else {
                     Log.d("Checkbox","UNCHECKED!");
                     mDbHelper.removeFromFav(drinkInfo.getString("name"));
+                    Toast.makeText(getApplicationContext(), drinkInfo.getString("name") + " removed to favorites!", Toast.LENGTH_SHORT).show();
                 }
 
             }
