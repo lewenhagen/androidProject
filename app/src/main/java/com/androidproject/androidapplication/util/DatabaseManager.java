@@ -333,7 +333,7 @@ public class DatabaseManager
         return isFav;
     }
 
-    public void setStars(String drinkName, int nrOfStars) {
+    public void setStars(String drinkName, float nrOfStars) {
 
         try
         {

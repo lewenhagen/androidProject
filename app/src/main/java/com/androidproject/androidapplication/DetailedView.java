@@ -151,33 +151,30 @@ public class DetailedView extends Activity {
             public void onRatingChanged(RatingBar ratingBar, float ratings,  boolean fromUser) {
 
                 Log.d("NEW STARS: ", rating.getRating() + "");
+                mDbHelper.setStars(drinkInfo.getString("name"), rating.getRating());
 
             }
 
         });
 
-
-
         chbox.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (chbox.isChecked()) {
-                            Log.d("Checkbox", "CHECKED! " + drinkInfo.getString("name"));
-                            mDbHelper.addToFav(drinkInfo.getString("name"));
-                            Toast.makeText(getApplicationContext(), drinkInfo.getString("name") + " added to favorites!", Toast.LENGTH_SHORT).show();
+            @Override
+            public void onClick(View v) {
+                if (chbox.isChecked()) {
+                    Log.d("Checkbox", "CHECKED! " + drinkInfo.getString("name"));
+                    mDbHelper.addToFav(drinkInfo.getString("name"));
+                    Toast.makeText(getApplicationContext(), drinkInfo.getString("name") + " added to favorites!", Toast.LENGTH_SHORT).show();
 
-                        } else {
-                            Log.d("Checkbox", "UNCHECKED!");
-                            mDbHelper.removeFromFav(drinkInfo.getString("name"));
-                            Toast.makeText(getApplicationContext(), drinkInfo.getString("name") + " removed to favorites!", Toast.LENGTH_SHORT).show();
-                        }
+                } else {
+                    Log.d("Checkbox", "UNCHECKED!");
+                    mDbHelper.removeFromFav(drinkInfo.getString("name"));
+                    Toast.makeText(getApplicationContext(), drinkInfo.getString("name") + " removed to favorites!", Toast.LENGTH_SHORT).show();
+                }
 
-                    }
-                });
+            }
+        });
 
         ((TextView) findViewById(R.id.recipe_text)).setText(drinkInfo.getString("howtodo"));
-
-
 
     }
 
