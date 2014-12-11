@@ -135,31 +135,35 @@ public class DetailedView extends Activity {
         mDbHelper.open();
         final Bundle drinkInfo = mDbHelper.getDrink(this.recipeTitle);
         final CheckBox chbox = ((CheckBox) findViewById(R.id.detailedview_addtofavorites));
+        RatingBar rating = ((RatingBar) findViewById(R.id.detailedview_ratingBar));
+
 
         if(mDbHelper.isItFavorite(drinkInfo.getString("name")) == 1) {
             chbox.setChecked(true);
         }
 
         ((TextView) findViewById(R.id.recipe_title)).setText(drinkInfo.getString("name"));
-        ((RatingBar) findViewById(R.id.detailedview_ratingBar)).setNumStars(5);
-        ((RatingBar) findViewById(R.id.detailedview_ratingBar)).setRating(drinkInfo.getInt("stars"));
+        rating.setNumStars(5);
+        rating.setRating(drinkInfo.getInt("stars"));
 
-        chbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(chbox.isChecked()) {
-                    Log.d("Checkbox","CHECKED! " + drinkInfo.getString("name"));
-                    mDbHelper.addToFav(drinkInfo.getString("name"));
-                    Toast.makeText(getApplicationContext(), drinkInfo.getString("name") + " added to favorites!", Toast.LENGTH_SHORT).show();
 
-                }else {
-                    Log.d("Checkbox","UNCHECKED!");
-                    mDbHelper.removeFromFav(drinkInfo.getString("name"));
-                    Toast.makeText(getApplicationContext(), drinkInfo.getString("name") + " removed to favorites!", Toast.LENGTH_SHORT).show();
-                }
 
-            }
-        });
+                chbox.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (chbox.isChecked()) {
+                            Log.d("Checkbox", "CHECKED! " + drinkInfo.getString("name"));
+                            mDbHelper.addToFav(drinkInfo.getString("name"));
+                            Toast.makeText(getApplicationContext(), drinkInfo.getString("name") + " added to favorites!", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Log.d("Checkbox", "UNCHECKED!");
+                            mDbHelper.removeFromFav(drinkInfo.getString("name"));
+                            Toast.makeText(getApplicationContext(), drinkInfo.getString("name") + " removed to favorites!", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
 
         ((TextView) findViewById(R.id.recipe_text)).setText(drinkInfo.getString("howtodo"));
 
