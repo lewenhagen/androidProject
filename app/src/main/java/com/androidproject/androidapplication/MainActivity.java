@@ -11,6 +11,7 @@ import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteException;
@@ -46,14 +47,17 @@ public class MainActivity extends Activity {
 
     private final String TAG = MainActivity.class.getSimpleName();
     private ArrayList<String> allSelected = new ArrayList<String>();
+    private TabHost mTabHost;
+    public static boolean backFromResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        backFromResult = false;
 
-        TabHost mTabHost = (TabHost) findViewById(R.id.tabHost);
+        mTabHost = (TabHost) findViewById(R.id.tabHost);
         mTabHost.setup();
         TabHost.TabSpec mTabContent = mTabHost.newTabSpec("Search");
         mTabContent.setContent(R.id.searchTab);
@@ -166,7 +170,8 @@ public class MainActivity extends Activity {
             }
         });
 
-        Button searchButton = (Button) findViewById(R.id.doSearch);
+        Button searchButton = (Button) findViewById(R.id.do_search);
+        Button resetButton = (Button) findViewById(R.id.reset_search);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +180,15 @@ public class MainActivity extends Activity {
                 doSearch();
             }
         });
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Reset search");
+                reset();
+            }
+        });
+
     }
 
     private void toggleSelected(TextView v) {
@@ -195,14 +209,14 @@ public class MainActivity extends Activity {
     }
 
     private void reset() {
-
+        this.recreate();
     }
 
     private void doSearch() {
         DatabaseManager mDbHelper = new DatabaseManager(getApplicationContext());
         mDbHelper.createDatabase();
         mDbHelper.open();
-        EditText searchInput = (EditText)findViewById(R.id.search_input_field);
+        EditText searchInput = (EditText)findViewById(R.id.search_input);
         String currInput = searchInput.getText().toString();
         ArrayList<String> resultOfSearch = new ArrayList<String>();
 
@@ -211,9 +225,6 @@ public class MainActivity extends Activity {
         }
         else {
             resultOfSearch = mDbHelper.performSearch(mDbHelper.getIdByName(allSelected));
-
-            reset();
-            allSelected.clear();
         }
         mDbHelper.close();
 
@@ -223,4 +234,6 @@ public class MainActivity extends Activity {
         startResultView.putExtras(args);
         startActivity(startResultView);
     }
+
+
 }

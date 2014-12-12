@@ -34,51 +34,71 @@
                     android:orientation="vertical">
                     <!-- Components of SearchTab -->
 
-                    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <RelativeLayout android:layout_width="fill_parent"
-                            android:layout_height="wrap_content" android:id="@+id/top_control_bar">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-                        </RelativeLayout>
-                        <LinearLayout android:id="@+id/bottom_control_bar"
-                            android:layout_width="fill_parent" android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true">
-                            <Button
+                        <FrameLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:id="@+id/searchBar">
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="49dp"
+                                android:id="@+id/search_input"
+                                android:layout_gravity="left|top"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:padding="10dp"
+                                android:hint="Enter drink name here!"
+                                android:focusable="true"
+                                android:enabled="true" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/searchBar"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:id="@+id/categories">
+
+                            <ExpandableListView
                                 android:layout_width="fill_parent"
-                                android:layout_height="wrap_content"
-                                android:text="@string/do_search"
-                                android:id="@+id/doSearch"
-                                android:gravity="bottom|center_horizontal"
-                                android:layout_gravity="bottom|center_horizontal"
-                                android:layout_marginTop="20dp"
-                                android:padding="30dp" />
+                                android:layout_height="300dp"
+                                android:id="@+id/search_categories"
+                                android:layout_gravity="center_horizontal|top"
+                                android:focusable="true" />
+                        </FrameLayout>
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/categories"
+                            android:weightSum="1">
 
                             <Button
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@string/do_search"
-                                android:id="@+id/reset"
-                                android:gravity="bottom|center_horizontal"
-                                android:layout_gravity="bottom|center_horizontal"
-                                android:layout_marginTop="20dp"
-                                android:padding="30dp"
-                                android:layout_below="@id/doSearch"/>
+                                android:text="Search"
+                                android:id="@+id/do_search"
+                                android:layout_weight="0.52" />
+
+                            <Button
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Reset"
+                                android:id="@+id/reset_search" />
                         </LinearLayout>
-                        <EditText
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/search_input_field"
-                            android:layout_gravity="left|top"
-                            android:layout_below="@id/top_control_bar"/>
 
-                        <ExpandableListView
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/search_categories"
-                            android:layout_gravity="center_horizontal|bottom"
-                            android:layout_below="@id/search_input_field"
-                            android:layout_above="@id/bottom_control_bar"/>
+
                     </RelativeLayout>
 
 
