@@ -24,5 +24,5 @@
     <string name="detailed_view_addtofavorites">Add to Favorites</string>
     <string name="recipe_text">error</string>
     <string name="reset_search">Reset</string>
-
+    <string name="release_notes">Version 1\n-----------\n-Added a Searchtab.\n-Added a Favoritestab.\n-Added a database to provide drinks.</string>
 </resources>

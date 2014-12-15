@@ -19,12 +19,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.nfc.Tag;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -47,15 +49,13 @@ public class MainActivity extends Activity {
 
     private final String TAG = MainActivity.class.getSimpleName();
     private ArrayList<String> allSelected = new ArrayList<String>();
+    private int currentTab = 1;
     private TabHost mTabHost;
-    public static boolean backFromResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        backFromResult = false;
 
         mTabHost = (TabHost) findViewById(R.id.tabHost);
         mTabHost.setup();
@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
         mTabContent.setIndicator("Favorites");
         mTabHost.addTab(mTabContent);
 
-        mTabHost.setCurrentTab(1);
+        mTabHost.setCurrentTab(currentTab);
 
         initFavorites();
         initSearchView();
@@ -83,7 +83,6 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onResume() {
-
         super.onResume();
         this.onCreate(null);
     }
@@ -128,10 +127,10 @@ public class MainActivity extends Activity {
                                     int position, long id) {
 
                 // ListView Clicked item index
-                int itemPosition     = position;
+                int itemPosition = position;
 
                 // ListView Clicked item value
-                String  itemValue    = (String) favorites.getItemAtPosition(position);
+                String itemValue = (String) favorites.getItemAtPosition(position);
 
                 // Show Alert
                 Intent openDetailedView = new Intent(MainActivity.this.getApplicationContext(), DetailedView.class);
@@ -212,6 +211,18 @@ public class MainActivity extends Activity {
         this.recreate();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("tab", mTabHost.getCurrentTab());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        currentTab = savedInstanceState.getInt("tab");
+    }
+
     private void doSearch() {
         DatabaseManager mDbHelper = new DatabaseManager(getApplicationContext());
         mDbHelper.createDatabase();
@@ -233,6 +244,33 @@ public class MainActivity extends Activity {
         args.putStringArrayList("result",resultOfSearch);
         startResultView.putExtras(args);
         startActivity(startResultView);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+
+        int action = MotionEventCompat.getActionMasked(event);
+
+        switch(action) {
+            case (MotionEvent.ACTION_DOWN) :
+                Log.d(TAG,"Action was DOWN");
+                return true;
+            case (MotionEvent.ACTION_MOVE) :
+                Log.d(TAG,"Action was MOVE");
+                return true;
+            case (MotionEvent.ACTION_UP) :
+                Log.d(TAG,"Action was UP");
+                return true;
+            case (MotionEvent.ACTION_CANCEL) :
+                Log.d(TAG,"Action was CANCEL");
+                return true;
+            case (MotionEvent.ACTION_OUTSIDE) :
+                Log.d(TAG,"Movement occurred outside bounds " +
+                        "of current screen element");
+                return true;
+            default :
+                return super.onTouchEvent(event);
+        }
     }
 
 

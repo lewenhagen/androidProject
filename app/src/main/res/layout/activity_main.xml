@@ -117,13 +117,13 @@
                         android:minHeight="50dp"
                         android:minWidth="50dp"
                         android:layout_marginTop="20dp"
-                        android:src="@drawable/ic_launcher" />
+                        android:src="@drawable/drinksheep" />
 
                     <TextView
                         android:layout_width="315dp"
                         android:layout_height="291dp"
-                        android:text="New Text"
-                        android:id="@+id/home_releasenotes"
+                        android:text="@+string/release_notes"
+                        android:id="@+id/release_notes"
                         android:layout_gravity="center_horizontal|bottom"
                         android:background="#ffffffff"
                         android:padding="10dp"
