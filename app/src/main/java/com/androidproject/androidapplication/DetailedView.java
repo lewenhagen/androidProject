@@ -158,7 +158,7 @@ public class DetailedView extends Activity {
 
                 Log.d("NEW STARS: ", rating.getRating() + "");
                 mDbHelper.setStars(drinkInfo.getString("name"), rating.getRating());
-
+                Toast.makeText(getApplicationContext(), "New rating: " + rating.getRating() + " stars!", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -187,7 +187,7 @@ public class DetailedView extends Activity {
 
                 Intent email = new Intent(Intent.ACTION_SEND);
                 email.putExtra(Intent.EXTRA_SUBJECT, "Try this drink!");
-                email.putExtra(Intent.EXTRA_TEXT, drinkInfo.getString("name") + "\n\n" + drinkInfo.getString("howtodo"));
+                email.putExtra(Intent.EXTRA_TEXT, drinkInfo.getString("name") + "\nI gave this: " + rating.getRating() + " stars!" + "\n\n" + drinkInfo.getString("howtodo"));
                 email.setType("message/rfc822");
                 startActivity(Intent.createChooser(email, "Choose an Email client :"));
             }
