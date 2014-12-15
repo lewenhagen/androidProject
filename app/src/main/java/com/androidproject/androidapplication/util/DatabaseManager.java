@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -74,7 +76,7 @@ public class DatabaseManager
     {
         try
         {
-            String sql ="SELECT * FROM Categories";
+            String sql ="SELECT * FROM ingredientCategories";
             ArrayList<String> result = new ArrayList<String>();
 
             Cursor mCur = mDb.rawQuery(sql, null);
@@ -93,7 +95,7 @@ public class DatabaseManager
     public ArrayList<String> getLiquidsByCategoryId(int id) {
         try
         {
-            String sql ="SELECT * FROM Cat_spec WHERE c_id = " + id;
+            String sql ="SELECT * FROM Ingredient WHERE catagory_id = " + id;
             ArrayList<String> result = new ArrayList<String>();
 
             Cursor mCur = mDb.rawQuery(sql, null);
@@ -115,10 +117,10 @@ public class DatabaseManager
         try
         {
             for(int i = 0; i < searchItems.size(); i++) {
-                String sql = "SELECT drink_id FROM Connection WHERE spec_id = " + searchItems.get(i);
+                String sql = "SELECT recipie_id FROM RecepieIngredientConnection WHERE ingredient_id = " + searchItems.get(i);
                 Cursor mCur = mDb.rawQuery(sql, null);
                 while (mCur.moveToNext()) {
-                    result.add(mCur.getInt(mCur.getColumnIndex("drink_id")));
+                    result.add(mCur.getInt(mCur.getColumnIndex("recipie_id")));
                 }
             }
         }
@@ -178,7 +180,7 @@ public class DatabaseManager
 
         try
         {
-            String sql = "SELECT name FROM Drinks WHERE name LIKE '%" + input + "%'";
+            String sql = "SELECT name FROM Recepie WHERE name LIKE '%" + input + "%'";
 
             Cursor mCur = mDb.rawQuery(sql, null);
             Log.d(TAG,"Result from query: " + mCur.toString());
@@ -202,7 +204,7 @@ public class DatabaseManager
         Log.d("Drink: ", name);
         try
         {
-            String sql = "SELECT * FROM Drinks WHERE name = '" + name + "'";
+            String sql = "SELECT * FROM Recepie WHERE name = '" + name + "'";
             Cursor mCur = mDb.rawQuery(sql, null);
             Log.d("MCUR",mCur.toString());
             while (mCur.moveToNext()) {
@@ -212,8 +214,23 @@ public class DatabaseManager
                 returnBundle.putInt("stars", mCur.getInt(mCur.getColumnIndex("stars")));
                 returnBundle.putString("image", mCur.getString(mCur.getColumnIndex("image")));
                 returnBundle.putString("howtodo", mCur.getString(mCur.getColumnIndex("howtodo")));
+
+				String recepieID = mCur.getString(mCur.getColumnIndex("id"));
+				String sql2 = "SELECT ingredient_id AS id, amount, name FROM RecepieIngredientConnection INNER JOIN Ingredient ON ingredient_id = Ingredient.id WHERE RecepieIngredientConnection.recipie_id = '"+recepieID+"'";
+				Cursor mCur2 = mDb.rawQuery(sql2, null);
+				Bundle ingredientBundle = new Bundle();
+				Log.d("MCUR",mCur2.toString());
+				while (mCur2.moveToNext()) {
+					ArrayList<String> Ingredient = new ArrayList<String>();
+					Ingredient.add(mCur2.getString(mCur2.getColumnIndex("id")));
+					Ingredient.add(mCur2.getString(mCur2.getColumnIndex("name")));
+					Ingredient.add(mCur2.getString(mCur2.getColumnIndex("amount")));
+					ingredientBundle.putStringArrayList(mCur2.getString(mCur2.getColumnIndex("name")), Ingredient);
+				}
+				returnBundle.putBundle("Ingredients", ingredientBundle);
                 Log.d("RETURNBUNDLE: ", returnBundle.toString());
             }
+
         }
         catch (SQLException mSQLException)
         {
@@ -229,7 +246,7 @@ public class DatabaseManager
         ArrayList<Integer> result = new ArrayList<Integer>();
         try
         {   for(String name : args) {
-                String sql = "SELECT id FROM Cat_spec WHERE name = '" + name + "'";
+                String sql = "SELECT id FROM Ingredient WHERE name = '" + name + "'";
                 Cursor mCur = mDb.rawQuery(sql, null);
                 while (mCur.moveToNext()) {
                     result.add(mCur.getInt(mCur.getColumnIndex("id")));
@@ -249,7 +266,7 @@ public class DatabaseManager
         ArrayList<String> result = new ArrayList<String>();
         try
         {   for(int id : args) {
-                String sql = "SELECT name FROM Drinks WHERE id = " + id + " LIMIT 1";
+                String sql = "SELECT name FROM Recepie WHERE id = " + id + " LIMIT 1";
                 Cursor mCur = mDb.rawQuery(sql, null);
                 while (mCur.moveToNext()) {
                     result.add(mCur.getString(mCur.getColumnIndex("name")));
@@ -269,7 +286,7 @@ public class DatabaseManager
         ArrayList<String> result = new ArrayList<String>();
         try
         {
-            String sql = "SELECT name FROM Drinks WHERE isFavorite = 1";
+            String sql = "SELECT name FROM Recepie WHERE isFavorite = 1";
             Cursor mCur = mDb.rawQuery(sql, null);
             while (mCur.moveToNext()) {
                 result.add(mCur.getString(mCur.getColumnIndex("name")));
@@ -289,7 +306,7 @@ public class DatabaseManager
         try
         {
             Log.d("Removes from DB", drinkToRemove);
-            String sql = "UPDATE Drinks SET isFavorite=0 WHERE name = '" + drinkToRemove + "'";
+            String sql = "UPDATE Recepie SET isFavorite=0 WHERE name = '" + drinkToRemove + "'";
             mDb.execSQL(sql);
         }
         catch (SQLException mSQLException)
@@ -303,7 +320,7 @@ public class DatabaseManager
         try
         {
             Log.d("Adds to DB", drinkToAdd);
-            String sql = "UPDATE Drinks SET isFavorite=1 WHERE name = '" + drinkToAdd + "'";
+            String sql = "UPDATE Recepie SET isFavorite=1 WHERE name = '" + drinkToAdd + "'";
             mDb.execSQL(sql);
         }
         catch (SQLException mSQLException)
@@ -318,7 +335,7 @@ public class DatabaseManager
 
         try
         {
-            String sql = "SELECT isFavorite FROM Drinks WHERE name = '" + checkThis + "'";
+            String sql = "SELECT isFavorite FROM Recepie WHERE name = '" + checkThis + "'";
             Cursor mCur = mDb.rawQuery(sql, null);
             while (mCur.moveToNext()) {
                 isFav = mCur.getInt(mCur.getColumnIndex("isFavorite"));
@@ -337,7 +354,7 @@ public class DatabaseManager
 
         try
         {
-            String sql = "UPDATE Drinks SET stars=" + nrOfStars + " WHERE name = '" + drinkName + "'";
+            String sql = "UPDATE Recepie SET stars=" + nrOfStars + " WHERE name = '" + drinkName + "'";
             mDb.execSQL(sql);
         }
         catch (SQLException mSQLException)
