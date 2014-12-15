@@ -1,66 +1,113 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context="com.androidproject.androidapplication.HomeFragment">
+    android:layout_height="match_parent" android:background="@color/black_overlay"
+    tools:context="com.androidproject.androidapplication.DetailedView" android:id="@+id/fullscreen_content">
 
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
 
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
 
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/searchBar">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="49dp"
-            android:id="@+id/editText"
-            android:layout_gravity="left|top"
-            android:layout_marginTop="10dp"
-            android:background="@color/defaultTextcolor"
-            android:text="Hello, input searchphrase here!"
-            android:padding="10dp" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/searchBar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/categories">
-
-        <ExpandableListView
-            android:layout_width="wrap_content"
-            android:layout_height="344dp"
-            android:id="@+id/expandableListView"
-            android:layout_gravity="center_horizontal|top" />
-    </FrameLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/categories"
-        android:weightSum="1">
+        android:layout_gravity="left|top">
 
-        <Button
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Search"
-            android:id="@+id/button"
-            android:layout_weight="0.52" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/frameLayout">
 
-        <Button
-            android:layout_width="match_parent"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/textView"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="20dp"
+                android:textSize="30dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Reset"
-            android:id="@+id/button" />
-    </LinearLayout>
+            android:layout_below="@+id/frameLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/frameLayout2">
 
+            <ImageView
+                android:layout_width="139dp"
+                android:layout_height="119dp"
+                android:id="@+id/imageView2"
+                android:layout_gravity="center_horizontal|top"
+                android:src="@drawable/drinksheep" />
+        </FrameLayout>
 
-</RelativeLayout>
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frameLayout2"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/frameLayout3">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Button"
+                    android:id="@+id/button"
+                    android:layout_gravity="center_horizontal|top" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New CheckBox"
+                    android:id="@+id/checkBox" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frameLayout3"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/frameLayout4">
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                android:layout_gravity="center_horizontal|top" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/frameLayout4"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:text="New Text"
+                android:id="@+id/textView3"
+                android:layout_gravity="left|top"
+                android:layout_margin="15dp"
+                android:textSize="20dp" />
+        </FrameLayout>
+    </RelativeLayout>
+
+</FrameLayout>
