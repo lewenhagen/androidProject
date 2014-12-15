@@ -1,34 +1,16 @@
 package com.androidproject.androidapplication;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteException;
-import android.graphics.drawable.ColorDrawable;
-import android.nfc.Tag;
-import android.support.v13.app.FragmentPagerAdapter;
 import android.os.Bundle;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -42,8 +24,6 @@ import android.widget.Toast;
 import com.androidproject.androidapplication.util.DatabaseManager;
 import com.androidproject.androidapplication.util.ExpandableListAdapter;
 
-import org.w3c.dom.Text;
-
 
 public class MainActivity extends Activity {
 
@@ -56,6 +36,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         mTabHost = (TabHost) findViewById(R.id.tabHost);
         mTabHost.setup();
@@ -245,33 +226,5 @@ public class MainActivity extends Activity {
         startResultView.putExtras(args);
         startActivity(startResultView);
     }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-
-        int action = MotionEventCompat.getActionMasked(event);
-
-        switch(action) {
-            case (MotionEvent.ACTION_DOWN) :
-                Log.d(TAG,"Action was DOWN");
-                return true;
-            case (MotionEvent.ACTION_MOVE) :
-                Log.d(TAG,"Action was MOVE");
-                return true;
-            case (MotionEvent.ACTION_UP) :
-                Log.d(TAG,"Action was UP");
-                return true;
-            case (MotionEvent.ACTION_CANCEL) :
-                Log.d(TAG,"Action was CANCEL");
-                return true;
-            case (MotionEvent.ACTION_OUTSIDE) :
-                Log.d(TAG,"Movement occurred outside bounds " +
-                        "of current screen element");
-                return true;
-            default :
-                return super.onTouchEvent(event);
-        }
-    }
-
 
 }

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="com.androidproject.androidapplication.HomeFragment"
-    android:id="@+id/frag_home_container">
+    android:id="@+id/container">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -137,7 +137,7 @@
                     android:orientation="vertical">
                     <!-- Compontents of FavoritesTab -->
                     <ListView
-                        android:layout_width="wrap_content"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/favorites_listview"
                         android:layout_gravity="left|top" />
