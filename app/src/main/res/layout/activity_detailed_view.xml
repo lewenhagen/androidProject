@@ -10,49 +10,107 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
 
-        <TextView
-            android:layout_width="217dp"
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="left|top">
+
+        <FrameLayout
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/recipe_title"
-            android:id="@+id/recipe_title"
-            android:layout_gravity="center_horizontal|top"
-            android:textSize="30dp"
-            android:layout_marginTop="20dp" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/frameLayout">
 
-    <ImageView
-        android:layout_width="155dp"
-        android:layout_height="155dp"
-        android:id="@+id/imageView"
-        android:layout_gravity="center_horizontal|top"
-        android:src="@drawable/ic_launcher"
-        android:layout_marginTop="80dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/recipe_title"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="20dp"
+                android:textSize="30dp" />
+        </FrameLayout>
 
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/detailedview_ratingBar"
-        android:layout_gravity="center"
-        android:layout_marginTop="70dp" />
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frameLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/frameLayout2">
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Is this a favorite?"
-        android:id="@+id/detailedview_addtofavorites"
-        android:layout_gravity="center"
-        android:layout_marginTop="110dp"
-        android:checked="false"
-        android:textSize="20dp" />
+            <ImageView
+                android:layout_width="139dp"
+                android:layout_height="119dp"
+                android:id="@+id/imageView2"
+                android:layout_gravity="center_horizontal|top"
+                android:src="@drawable/drinksheep"
+                android:layout_margin="20dp" />
+        </FrameLayout>
 
-    <TextView
-        android:layout_width="280dp"
-        android:layout_height="126dp"
-        android:text="@string/recipe_text"
-        android:id="@+id/recipe_text"
-        android:layout_gravity="center_horizontal|bottom"
-        android:textSize="20dp"
-        android:maxLines="20"/>
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frameLayout2"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/frameLayout3"
+            android:layout_margin="20dp">
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Forward..."
+                    android:id="@+id/forwardButton"
+                    android:layout_gravity="center_horizontal|top" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add to favorites"
+                    android:id="@+id/detailedview_addtofavorites" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frameLayout3"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/frameLayout4">
+
+            <RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/detailedview_ratingBar"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_margin="20dp" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@+id/frameLayout4"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/recipe_text"
+                android:layout_gravity="top|left"
+                android:layout_margin="15dp"
+                android:textSize="20dp" />
+        </FrameLayout>
+    </RelativeLayout>
 
 </FrameLayout>

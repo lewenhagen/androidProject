@@ -6,13 +6,19 @@ import com.androidproject.androidapplication.util.SystemUiHider;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -31,7 +37,7 @@ public class DetailedView extends Activity {
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
     private static final boolean TOGGLE_ON_CLICK = true;
     private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
-
+    private String newMail = "";
     private SystemUiHider mSystemUiHider;
     private String recipeTitle;
 
@@ -152,7 +158,7 @@ public class DetailedView extends Activity {
 
                 Log.d("NEW STARS: ", rating.getRating() + "");
                 mDbHelper.setStars(drinkInfo.getString("name"), rating.getRating());
-
+                Toast.makeText(getApplicationContext(), "New rating: " + rating.getRating() + " stars!", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -175,7 +181,17 @@ public class DetailedView extends Activity {
         });
 
         ((TextView) findViewById(R.id.recipe_text)).setText(drinkInfo.getString("howtodo"));
+        ((Button) findViewById(R.id.forwardButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent email = new Intent(Intent.ACTION_SEND);
+                email.putExtra(Intent.EXTRA_SUBJECT, "Try this drink!");
+                email.putExtra(Intent.EXTRA_TEXT, drinkInfo.getString("name") + "\nI gave this: " + rating.getRating() + " stars!" + "\n\n" + drinkInfo.getString("howtodo"));
+                email.setType("message/rfc822");
+                startActivity(Intent.createChooser(email, "Choose an Email client :"));
+            }
+        });
 
     }
-
 }
