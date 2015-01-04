@@ -1,6 +1,7 @@
 package com.androidproject.androidapplication;
 
 import com.androidproject.androidapplication.util.DatabaseManager;
+import com.androidproject.androidapplication.util.ExpandableListAdapter;
 import com.androidproject.androidapplication.util.SystemUiHider;
 
 import android.annotation.TargetApi;
@@ -19,10 +20,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -180,7 +186,27 @@ public class DetailedView extends Activity {
             }
         });
 
-        ((TextView) findViewById(R.id.recipe_text)).setText(drinkInfo.getString("howtodo"));
+
+		ExpandableListView specListView = (ExpandableListView) findViewById(R.id.ExpandableRecipieSpecs);
+		List<String> listDataHeader = new ArrayList<String>();
+		HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
+		List<String> ingredientList = new ArrayList<String>();
+		List<String> howto = new ArrayList<String>();
+
+		for(int i = 0; i < drinkInfo.getBundle("Ingredients").size(); i++){
+			String pos = ""+i;
+			ingredientList.add(drinkInfo.getBundle("Ingredients").getStringArrayList(""+pos).get(2)+" "+drinkInfo.getBundle("Ingredients").getStringArrayList(""+pos).get(1));
+		}
+		howto.add(drinkInfo.getString("howtodo"));
+
+		listDataHeader.add("Ingredients");
+		listDataChild.put("Ingredients", ingredientList);
+		listDataHeader.add("Description");
+		listDataChild.put("Description", howto);
+
+		final ExpandableListAdapter listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+		specListView.setAdapter(listAdapter);
+
         ((Button) findViewById(R.id.forwardButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

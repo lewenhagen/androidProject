@@ -102,15 +102,14 @@
             android:layout_below="@+id/frameLayout4"
             android:layout_centerHorizontal="true">
 
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="New Text"
-                android:id="@+id/recipe_text"
-                android:layout_gravity="top|left"
-                android:layout_margin="15dp"
-                android:textSize="20dp" />
-        </FrameLayout>
+			<ExpandableListView
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:id="@+id/ExpandableRecipieSpecs"
+				android:headerDividersEnabled="false"
+				tools:listitem="@android:layout/simple_list_item_2"
+				/>
+		</FrameLayout>
     </RelativeLayout>
 
 </FrameLayout>
