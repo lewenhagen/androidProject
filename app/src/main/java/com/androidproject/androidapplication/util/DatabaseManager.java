@@ -220,12 +220,14 @@ public class DatabaseManager
 				Cursor mCur2 = mDb.rawQuery(sql2, null);
 				Bundle ingredientBundle = new Bundle();
 				Log.d("MCUR",mCur2.toString());
+				int pos = 0;
 				while (mCur2.moveToNext()) {
 					ArrayList<String> Ingredient = new ArrayList<String>();
 					Ingredient.add(mCur2.getString(mCur2.getColumnIndex("id")));
 					Ingredient.add(mCur2.getString(mCur2.getColumnIndex("name")));
 					Ingredient.add(mCur2.getString(mCur2.getColumnIndex("amount")));
-					ingredientBundle.putStringArrayList(mCur2.getString(mCur2.getColumnIndex("name")), Ingredient);
+					ingredientBundle.putStringArrayList(""+pos, Ingredient);
+					pos++;
 				}
 				returnBundle.putBundle("Ingredients", ingredientBundle);
                 Log.d("RETURNBUNDLE: ", returnBundle.toString());
